@@ -9,7 +9,7 @@ dev_langs:
 
 # ObservableObject
 
-The [`ObservableObject`](https://docs.microsoft.com/dotnet/api/microsoft.toolkit.mvvm.componentmodel.ObservableObject) is a base class for objects that are observable by implementing the [`INotifyPropertyChanged`](https://docs.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged) and [`INotifyPropertyChanging`](https://docs.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging) interfaces. It can be used as a starting point for all kinds of objects that need to support property change notifications.
+The [ObservableObject](https://docs.microsoft.com/dotnet/api/microsoft.toolkit.mvvm.componentmodel.ObservableObject) is a base class for objects that are observable by implementing the [INotifyPropertyChanged](https://docs.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged) and [INotifyPropertyChanging](https://docs.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging) interfaces. It can be used as a starting point for all kinds of objects that need to support property change notifications.
 
 ## How it works
 
@@ -53,7 +53,7 @@ public class ObservableUser : ObservableObject
     public string Name
     {
         get => user.Name;
-        set => Set(() => user.Name, value);
+        set => SetProperty(() => user.Name, value);
     }
 }
 ```
@@ -83,9 +83,6 @@ public class MyModel : ObservableObject
 ```
 
 Here the `SetPropertyAndNotifyOnCompletion<TTask>(ref TTask, Expression<Func<TTask>>, TTask, string)` method will take care of updating the target field, monitoring the new task, if present, and raising the notification event when that task completes. This way, it's possible to just bind to a task property and to be notified when its status changes.
-
-> [!NOTE]
-> The `SetPropertyAndNotifyOnCompletion` method is meant to replace the usage of the `NotifyTaskCompletion<T>` type from the `Microsoft.Toolkit` package. If this type was being used, it can be replaced with just the inner `Task` (or `Task<TResult>`) property, and then the `SetPropertyAndNotifyOnCompletion` method can be used to set its value and raise notification changes. All the properties exposed by the `NotifyTaskCompletion<T>` type are available directly on `Task` instances.
 
 ## Sample Code
 
