@@ -31,25 +31,24 @@ namespace MvvmSample
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             // Ensure the UI is initialized
-            if (Window.Current.Content is null)
+            if (Windows.UI.Xaml.Window.Current.Content is null)
             {
 #if WINDOWS_UWP
                 // Load the WinUI resource dictionaries on UWP
                 Resources.MergedDictionaries.Add(new Microsoft.UI.Xaml.Controls.XamlControlsResources());
 #endif
 
-                Window.Current.Content = new Shell();
+                Windows.UI.Xaml.Window.Current.Content = new Shell();
 
                 TitleBarHelper.StyleTitleBar();
                 TitleBarHelper.ExpandViewIntoTitleBar();
 
                 // Register services
-                Ioc.Default.ConfigureServices(services =>
-                {
-                    services.AddSingleton<IFilesService, FilesService>();
-                    services.AddSingleton<ISettingsService, SettingsService>();
-                    services.AddSingleton(RestService.For<IRedditService>("https://www.reddit.com/"));
-                });
+                Ioc.Default.ConfigureServices(new ServiceCollection()
+                    .AddSingleton<IFilesService, FilesService>()
+                    .AddSingleton<ISettingsService, SettingsService>()
+                    .AddSingleton(RestService.For<IRedditService>("https://www.reddit.com/"))
+                    .BuildServiceProvider());
             }
 
             // Enable the prelaunch if needed, and activate the window
@@ -57,7 +56,7 @@ namespace MvvmSample
             {
                 CoreApplication.EnablePrelaunch(true);
 
-                Window.Current.Activate();
+                Windows.UI.Xaml.Window.Current.Activate();
             }
         }
 
